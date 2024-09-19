@@ -4,7 +4,7 @@ template 網站: https://mde.tw/cad2024_hw (請完成設定後刪除這一行)
 
 使用者: 41123155
 
-作業網站: 請填入此網站的網址
+作業網站:https://mdecad2024.github.io/hw-41123155
 
 作業倉儲:https://github.com/mdecad2024/hw-41123155 
 
