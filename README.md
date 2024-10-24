@@ -6,4 +6,8 @@
 
 作業倉儲:https://github.com/mdecad2024/hw-41123155 
 
-其他資訊: 請自行填入其他相關資料
+其他資訊: 
+利用 Codespaces 維護課程網站的步驟:
+chmod u+x init_replit
+./init_replit
+python main.py 
