@@ -9,5 +9,5 @@
 其他資訊: 
 利用 Codespaces 維護課程網站的步驟:
 chmod u+x init_replit
-   ./init_replit
-   python main.py 
+   ----./init_replit
+  ---- python main.py 
