@@ -406,8 +406,8 @@ function changeOption(strOpt, strValue) {
 
 function openByGet() {
     var urls = [
-        "https://s104.cycu.org/~41123155/4.stl",
-        "https://s104.cycu.org/~41123155/3.stl",
+        "https://s104.cycu.org/~41123155/1.stl",
+        "https://s104.cycu.org/~41123155/2.stl",
         "https://s104.cycu.org/~41123155/3.stl",
         "https://s104.cycu.org/~41123155/4.stl",
         "https://s104.cycu.org/~41123155/5.stl",
@@ -420,9 +420,12 @@ function openByGet() {
         "https://s104.cycu.org/~41123155/12.stl"
     ];
     var opt = getOptions();
+
     urls.forEach((url, index) => {
-        opt.SceneUrl = url;
-        readSTLfile(opt, 'cv' + (index + 1)); // 對每個 canvas 動態生成 canvas ID
+        setTimeout(() => {
+            opt.SceneUrl = url;
+            readSTLfile(opt, 'cv' + (index + 1)); // 對應 canvas ID
+        }, index * 500); // 每個模型加載間隔 500 毫秒
     });
 }
 
