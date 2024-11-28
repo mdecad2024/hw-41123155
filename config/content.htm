@@ -20,7 +20,7 @@
 <h1>Attendance</h1>
 <p>出席 (10%) - 自行舉證評分</p>
 <p>自行利用 Github commits 提交記錄評分.</p>
-<h1>w7</h1>
+<h1>HW1</h1>
 <p>Homework 1 (10%):</p>
 <p style="padding-left: 30px;">利用 Solvespace 與 NX2312 建立 <a href="https://mde.tw/cad2024/content/Parts.html">Parts</a> 頁面中的零件</p>
 <p style="padding-left: 30px;">其他<a href="http://229.cycu.org/part_modeling_projects.pdf">零件模擬練習</a></p>
@@ -328,21 +328,206 @@ openByGet();
 <p>執行心得: 我學會了如何使用這裏去維護自己網站，<span>Solvespace 去繪製簡單的零件圖，以及NX基礎使用，並將畫好零件圖上傳虛擬機，然後直接使用網路查看，但是我還是很不了解這東西業界需要的是簡單化，以及快速，保險，並不是複雜化，在業界小組總不能有一方用這種做，結果換人做時別人完全無法接手巴。</span></p>
 <p>所以我覺得這可攜以及這網站，對個人的話是非常好的一個工具，但是要對業界可能就沒這麼的試用。</p>
 <p></p>
-<p>自評分數: 完成上述流程後, 請將 HW1 自評分數輸入 cad2024 自評表單中.</p><h2>HW1_Exam</h2>
+<p>自評分數: 完成上述流程後, 請將 HW1 自評分數輸入 cad2024 自評表單中.</p>
+<h2>w7</h2>
+<p>
+<script src="/static/jsc3d.js" type="text/javascript"></script>
+</p>
+<div id="models"><canvas height="200" id="cv1" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv2" style="border: 1px solid;" width="200"></canvas> <!-- 可以添加更多的 canvas --></div>
+<div style="width: 400px; height: 100px; border: 1px solid;">Model Color:<input id="mdlClr" onchange="changeOption('ModelColor',this.value)" style="margin-right: 50px;" type="color" value="#00ff40"/> Back Color1:<input id="bckClr1" onchange="changeOption('BackgroundColor1',this.value)" style="margin-right: 50px;" type="color"/> Back Color2:<input id="bckClr2" onchange="changeOption('BackgroundColor2',this.value)" type="color"/><br/> Render Mode:<select id="render" onchange="changeOption('RenderMode',this.value)">
+<option>Flat</option>
+<option>Point</option>
+<option>Wireframe</option>
+<option>Smooth</option>
+</select>Definition:<select id="defini" onchange="changeOption('Definition',this.value)">
+<option>Standard</option>
+<option>low</option>
+<option>high</option>
+</select></div>
+<p>
+<script type="text/javascript">
+var viewers = [];
+
+function getOptions(){
+    var mc = document.getElementById("mdlClr").value;
+    var bc1 = document.getElementById("bckClr1").value;
+    var bc2 = document.getElementById("bckClr2").value;
+    var ren = document.getElementById("render").value;
+    var def = document.getElementById("defini").value;
+    return {ModelColor: mc, BackgroundColor1: bc1, BackgroundColor2: bc2, RenderMode: ren, Definition: def};
+}
+
+function readSTLfile(opt, canvasId){
+    var canvas = document.getElementById(canvasId);
+    var viewer = new JSC3D.Viewer(canvas);
+    viewer.setParameter('SceneUrl', opt.SceneUrl);
+    viewer.setParameter('InitRotationX', 0);
+    viewer.setParameter('InitRotationY', 0);
+    viewer.setParameter('InitRotationZ', 0);
+    viewer.setParameter('ModelColor', opt.ModelColor);
+    viewer.setParameter('BackgroundColor1', opt.BackgroundColor1);
+    viewer.setParameter('BackgroundColor2', opt.BackgroundColor2);
+    viewer.setParameter('RenderMode', opt.RenderMode);
+    viewer.setParameter('Definition', opt.Definition);
+    viewer.init();
+    viewer.update();
+    viewers.push(viewer); // 保存 viewer 實例
+}
+
+function changeOption(strOpt,strValue){
+    console.log("change " + strOpt + " to " + strValue);
+    viewers.forEach(viewer => {
+        viewer.setParameter(strOpt, strValue);
+        viewer.init();
+        viewer.update();
+    });
+}
+
+function openByUrl(){
+    var url = document.getElementById("url").value;
+    var opt = getOptions();
+    opt.SceneUrl = url;
+    // 可以添加更多的 STL URL
+    readSTLfile(opt, 'cv1'); // 為每個 canvas 調用
+    readSTLfile(opt, 'cv2'); // 第二個 canvas
+}
+
+function openByGet(){
+    var urls = [
+        "https://s104.cycu.org/~41123155/41123155_lesson2_solvespace.stl",
+        "https://s104.cycu.org/~41123155/41123155-part-2.stl"
+    ];
+    var opt = getOptions();
+    urls.forEach((url, index) => {
+        opt.SceneUrl = url;
+        readSTLfile(opt, 'cv' + (index + 1)); // 動態生成 canvas ID
+    });
+}
+
+openByGet();
+</script>
+</p>
+<p><span>下載零件檔:<a href="https://s104.cycu.org/~41123155/41123155-part-2.stl">https://s104.cycu.org/~41123155/41123155-part-2.stl</a></span></p>
+<p><span>stl網路:<a href="https://mdecad2024.github.io/hw-41123155/cmsimde/static/viewstl.html?src=https://s104.cycu.org/~41123155/41123155-part-2.stl">https://mdecad2024.github.io/hw-41123155/cmsimde/static/viewstl.html?src=https://s104.cycu.org/~41123155/41123155-part-2.stl</a></span></p>
+<p><span></span></p>
+<p><span>操作影片</span>:國立虎尾科技大學機械設計工程系電腦輔助設計與實習- 作業一之二 STL VIEWER 使用說明</p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" data-mce-fragment="1" frameborder="0" height="250" referrerpolicy="strict-origin-when-cross-origin" src="//www.youtube.com/embed/3_KnxxBsSt8" title="YouTube video player" width="400"></iframe></p>
+<p><span>影片網址:https://www.youtube.com/watch?v=3_KnxxBsSt8</span></p>
+<p><span></span></p>
 <p></p>
-<p>從<a href="http://229.cycu.org/part_modeling_projects.pdf">零件模擬練習</a>中選出零件, 隨堂進行考試.</p>
+<p><span>操作影片</span><span>:利用 NX2312 繪製列表中零件的操作過程-作業1-3</span></p>
+<p><iframe allowfullscreen="allowfullscreen" height="250" src="//www.youtube.com/embed/wfSkCHQ5mT0" width="400"></iframe></p>
+<p><span>影片網址:<a href="https://youtu.be/wfSkCHQ5mT0">https://youtu.be/wfSkCHQ5mT0</a></span></p>
 <p></p>
-<p><img alt="" height="300" src="/images/未命名1.png" width="400"/></p>
+<p>
+<script src="/static/jsc3d.js" type="text/javascript"></script>
+</p>
+<div id="models"><!-- 添加 10 個 canvas --> <canvas height="200" id="cv3" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv4" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv5" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv6" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv7" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv8" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv9" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv10" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv11" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv12" style="border: 1px solid;" width="200"></canvas></div>
+<div style="width: 400px; height: 100px; border: 1px solid;">Model Color: <input id="mdlClr" onchange="changeOption('ModelColor', this.value)" style="margin-right: 50px;" type="color" value="#00ff40"/> Back Color1: <input id="bckClr1" onchange="changeOption('BackgroundColor1', this.value)" style="margin-right: 50px;" type="color"/> Back Color2: <input id="bckClr2" onchange="changeOption('BackgroundColor2', this.value)" type="color"/><br/> Render Mode:<select id="render" onchange="changeOption('RenderMode', this.value)">
+<option>Flat</option>
+<option>Point</option>
+<option>Wireframe</option>
+<option>Smooth</option>
+</select>Definition:<select id="defini" onchange="changeOption('Definition', this.value)">
+<option>Standard</option>
+<option>low</option>
+<option>high</option>
+</select></div>
+<p>
+<script type="text/javascript">
+var viewers = [];
+
+function getOptions() {
+    var mc = document.getElementById("mdlClr").value;
+    var bc1 = document.getElementById("bckClr1").value;
+    var bc2 = document.getElementById("bckClr2").value;
+    var ren = document.getElementById("render").value;
+    var def = document.getElementById("defini").value;
+    return { ModelColor: mc, BackgroundColor1: bc1, BackgroundColor2: bc2, RenderMode: ren, Definition: def };
+}
+
+function readSTLfile(opt, canvasId, callback) {
+    var canvas = document.getElementById(canvasId);
+    var viewer = new JSC3D.Viewer(canvas);
+    viewer.setParameter('SceneUrl', opt.SceneUrl);
+    viewer.setParameter('InitRotationX', 0);
+    viewer.setParameter('InitRotationY', 0);
+    viewer.setParameter('InitRotationZ', 0);
+    viewer.setParameter('ModelColor', opt.ModelColor);
+    viewer.setParameter('BackgroundColor1', opt.BackgroundColor1);
+    viewer.setParameter('BackgroundColor2', opt.BackgroundColor2);
+    viewer.setParameter('RenderMode', opt.RenderMode);
+    viewer.setParameter('Definition', opt.Definition);
+    
+    viewer.init();
+    viewer.update();
+
+    viewers.push(viewer);
+
+    // 確認模型是否成功加載
+    if (viewer.getScene() === null) {
+        console.error("Model failed to load for canvas: " + canvasId);
+    }
+
+    if (callback) callback();
+}
+
+function changeOption(strOpt, strValue) {
+    viewers.forEach(viewer => {
+        viewer.setParameter(strOpt, strValue);
+        viewer.init();
+        viewer.update();
+    });
+}
+
+function loadModelSequentially(urls, index) {
+    if (index >= urls.length) return;
+
+    var opt = getOptions();
+    opt.SceneUrl = urls[index];
+    var canvasId = 'cv' + (index + 3);  // 將 canvas ID 從 3 開始
+
+    // 加載當前模型，完成後再加載下一個
+    readSTLfile(opt, canvasId, function() {
+        loadModelSequentially(urls, index + 1);
+    });
+}
+
+function openByGet() {
+    var urls = [
+        "https://s104.cycu.org/~41123155/3.stl",
+        "https://s104.cycu.org/~41123155/4.stl",
+        "https://s104.cycu.org/~41123155/5.stl",
+        "https://s104.cycu.org/~41123155/6.stl",
+        "https://s104.cycu.org/~41123155/7.stl",
+        "https://s104.cycu.org/~41123155/8.stl",
+        "https://s104.cycu.org/~41123155/9.stl",
+        "https://s104.cycu.org/~41123155/10.stl",
+        "https://s104.cycu.org/~41123155/11.stl",
+        "https://s104.cycu.org/~41123155/12.stl"
+    ];
+    loadModelSequentially(urls, 0);
+}
+
+// 開始加載模型
+openByGet();
+</script>
+</p>
+<p><span>下載零件檔:</span></p>
+<p><a href="https://s104.cycu.org/~41123155/1.stl">https://s104.cycu.org/~41123155/1.stl</a>       <a href="https://s104.cycu.org/~41123155/2.stl">https://s104.cycu.org/~41123155/2.stl</a>    </p>
+<p><a href="https://s104.cycu.org/~41123155/3.stl">https://s104.cycu.org/~41123155/3.stl</a>       <a href="https://s104.cycu.org/~41123155/4.stl">https://s104.cycu.org/~41123155/4.stl</a> </p>
+<p><a href="https://s104.cycu.org/~41123155/5.stl">https://s104.cycu.org/~41123155/5.stl</a>       <a href="https://s104.cycu.org/~41123155/6.stl">https://s104.cycu.org/~41123155/6.stl</a></p>
+<p><a href="https://s104.cycu.org/~41123155/7.stl">https://s104.cycu.org/~41123155/7.stl</a>       <a href="https://s104.cycu.org/~41123155/8.stl">https://s104.cycu.org/~41123155/8.stl</a></p>
+<p><a href="https://s104.cycu.org/~41123155/9.stl">https://s104.cycu.org/~41123155/9.stl</a>      <a href="https://s104.cycu.org/~41123155/10.stl">https://s104.cycu.org/~41123155/10.stl</a> <br/><br/><a href="https://s104.cycu.org/~41123155/11.stl">https://s104.cycu.org/~41123155/11.stl</a>    <a href="https://s104.cycu.org/~41123155/12.stl">https://s104.cycu.org/~41123155/12.stl</a> <br/><br/><br/></p>
+<p>影片標題: 國立虎尾科技大學機械設計工程系電腦輔助設計與實習- 作業一之四</p>
 <p></p>
-<p><img alt="" height="300" src="/images/未命名2.png" width="400"/></p>
-<p>零件考試題目以 Solvespace 繪圖操作過程影片如下:</p>
-<p>請將操作影片嵌入</p>
-<p>所完成的零件檔案下載</p>
+<p>所完成的零件檔案下載 ...... HW1</p>
 <p></p>
-<p style="padding-left: 30px;"></p>
-<p>零件考試題目以 NX2312 繪圖操作過程影片如下:</p>
-<p>請將操作影片嵌入 ......</p>
-<p>所完成的零件檔案下載</p><h3>W10</h3>
+<p>執行心得: 我學會了如何使用這裏去維護自己網站，<span>Solvespace 去繪製簡單的零件圖，以及NX基礎使用，並將畫好零件圖上傳虛擬機，然後直接使用網路查看，但是我還是很不了解這東西業界需要的是簡單化，以及快速，保險，並不是複雜化，在業界小組總不能有一方用這種做，結果換人做時別人完全無法接手巴。</span></p>
+<p>所以我覺得這可攜以及這網站，對個人的話是非常好的一個工具，但是要對業界可能就沒這麼的試用。</p>
+<p></p>
+<p>自評分數: 完成上述流程後, 請將 HW1 自評分數輸入 cad2024 自評表單中.</p>
+<h3>w10</h3>
 <p>從<a href="http://229.cycu.org/part_modeling_projects.pdf">零件模擬練習</a>中選出零件, 隨堂進行考試.</p>
 <p><img alt="" height="300" src="/images/未命名1.png" width="407"/></p>
 <p>零件考試題目以 Solvespace 繪圖操作過程影片如下:</p>
@@ -444,7 +629,124 @@ function openByGet(){
 
 openByGet();
 </script>
-</p><h1>HW2</h1>
+</p><h4>HW1_Exam</h4>
+<p></p>
+<p>從<a href="http://229.cycu.org/part_modeling_projects.pdf">零件模擬練習</a>中選出零件, 隨堂進行考試.</p>
+<p></p>
+<p><img alt="" height="300" src="/images/未命名1.png" width="400"/></p>
+<p></p>
+<p><img alt="" height="300" src="/images/未命名2.png" width="400"/></p>
+<p>零件考試題目以 Solvespace 繪圖操作過程影片如下:</p>
+<p>請將操作影片嵌入</p>
+<p>所完成的零件檔案下載</p>
+<p></p>
+<p style="padding-left: 30px;"></p>
+<p>零件考試題目以 NX2312 繪圖操作過程影片如下:</p>
+<p>請將操作影片嵌入 ......</p>
+<p>所完成的零件檔案下載</p>
+<h4>w10</h4>
+<p>從<a href="http://229.cycu.org/part_modeling_projects.pdf">零件模擬練習</a>中選出零件, 隨堂進行考試.</p>
+<p><img alt="" height="300" src="/images/未命名1.png" width="407"/></p>
+<p>零件考試題目以 Solvespace 繪圖操作過程影片如下:</p>
+<p></p>
+<p>請將操作影片嵌入</p>
+<p><iframe allowfullscreen="allowfullscreen" height="300" src="//www.youtube.com/embed/TaTFdcPXD_U" width="400"></iframe></p>
+<p></p>
+<p>
+<script src="/static/jsc3d.js" type="text/javascript"></script>
+</p>
+<p>所完成的零件檔案下載</p>
+<p><a href="https://s104.cycu.org/~41123155/W10-test.stl">https://s104.cycu.org/~41123155/W10-test.stl</a></p>
+<p><a href="https://s104.cycu.org/~41123155/W10-test.slvs">https://s104.cycu.org/~41123155/W10-test.slvs</a></p>
+<p></p>
+<p style="padding-left: 30px;"></p>
+<p>零件考試題目以 NX2312 繪圖操作過程影片如下:</p>
+<p>請將操作影片嵌入 </p>
+<p><iframe allowfullscreen="allowfullscreen" height="300" src="//www.youtube.com/embed/C0yX4yXRsio" width="400"></iframe></p>
+<p>所完成的零件檔案下載</p>
+<p><a href="https://s104.cycu.org/~41123155/W10-NX.prt">https://s104.cycu.org/~41123155/W10-NX.prt</a></p>
+<p></p>
+<p><img caption="false" height="300" src="/images/未命名2.png" width="400"/></p>
+<p><img alt="" height="369" src="/images/未命名.png" width="400"/></p>
+<p><span>零件檔案下載:</span><a href="https://s104.cycu.org/~41123155/model1.prt">https://s104.cycu.org/~41123155/model1.prt</a></p>
+<p></p>
+<p>
+<script src="/static/jsc3d.js" type="text/javascript"></script>
+</p>
+<div id="models"><canvas height="200" id="cv1" style="border: 1px solid;" width="200"></canvas> <canvas height="200" id="cv2" style="border: 1px solid;" width="200"></canvas> <!-- 可以添加更多的 canvas --></div>
+<div style="width: 400px; height: 100px; border: 1px solid;">Model Color:<input id="mdlClr" onchange="changeOption('ModelColor',this.value)" style="margin-right: 50px;" type="color" value="#00ff40"/> Back Color1:<input id="bckClr1" onchange="changeOption('BackgroundColor1',this.value)" style="margin-right: 50px;" type="color"/> Back Color2:<input id="bckClr2" onchange="changeOption('BackgroundColor2',this.value)" type="color"/><br/> Render Mode:<select id="render" onchange="changeOption('RenderMode',this.value)">
+<option>Flat</option>
+<option>Point</option>
+<option>Wireframe</option>
+<option>Smooth</option>
+</select>Definition:<select id="defini" onchange="changeOption('Definition',this.value)">
+<option>Standard</option>
+<option>low</option>
+<option>high</option>
+</select></div>
+<p>
+<script type="text/javascript">
+var viewers = [];
+
+function getOptions(){
+    var mc = document.getElementById("mdlClr").value;
+    var bc1 = document.getElementById("bckClr1").value;
+    var bc2 = document.getElementById("bckClr2").value;
+    var ren = document.getElementById("render").value;
+    var def = document.getElementById("defini").value;
+    return {ModelColor: mc, BackgroundColor1: bc1, BackgroundColor2: bc2, RenderMode: ren, Definition: def};
+}
+
+function readSTLfile(opt, canvasId){
+    var canvas = document.getElementById(canvasId);
+    var viewer = new JSC3D.Viewer(canvas);
+    viewer.setParameter('SceneUrl', opt.SceneUrl);
+    viewer.setParameter('InitRotationX', 0);
+    viewer.setParameter('InitRotationY', 0);
+    viewer.setParameter('InitRotationZ', 0);
+    viewer.setParameter('ModelColor', opt.ModelColor);
+    viewer.setParameter('BackgroundColor1', opt.BackgroundColor1);
+    viewer.setParameter('BackgroundColor2', opt.BackgroundColor2);
+    viewer.setParameter('RenderMode', opt.RenderMode);
+    viewer.setParameter('Definition', opt.Definition);
+    viewer.init();
+    viewer.update();
+    viewers.push(viewer); // 保存 viewer 實例
+}
+
+function changeOption(strOpt,strValue){
+    console.log("change " + strOpt + " to " + strValue);
+    viewers.forEach(viewer => {
+        viewer.setParameter(strOpt, strValue);
+        viewer.init();
+        viewer.update();
+    });
+}
+
+function openByUrl(){
+    var url = document.getElementById("url").value;
+    var opt = getOptions();
+    opt.SceneUrl = url;
+    // 可以添加更多的 STL URL
+    readSTLfile(opt, 'cv1'); // 為每個 canvas 調用
+    readSTLfile(opt, 'cv2'); // 第二個 canvas
+}
+
+function openByGet(){
+    var urls = [
+        "https://s104.cycu.org/~41123155/W10-test.stl",
+        "https://s104.cycu.org/~41123155/model1.stl"
+    ];
+    var opt = getOptions();
+    urls.forEach((url, index) => {
+        opt.SceneUrl = url;
+        readSTLfile(opt, 'cv' + (index + 1)); // 動態生成 canvas ID
+    });
+}
+
+openByGet();
+</script>
+</p><h1>w11</h1>
 <p>w11</p>
 <p>Homework 2 (10%):</p>
 <p style="padding-left: 30px;">利用 Solvespace 與 NX 建立 <a href="https://mde.tw/cad2024/content/BonW.html">Balance on Wheels</a> 組立件</p>
